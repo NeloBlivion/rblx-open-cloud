@@ -54,6 +54,7 @@ class GroupShout:
     """
 
     def __init__(self, shout, api_key=None) -> None:
+        self._data: dict = shout
         self.content: str = shout["content"]
         self.user: User = User(int(shout["poster"].split("/")[1]), api_key)
         self.created_at: datetime.datetime = (
@@ -97,6 +98,7 @@ class GroupRolePermissions:
     """
 
     def __init__(self, permissions) -> None:
+        self._data: dict = permissions
         self.view_wall_posts: bool = permissions["viewWallPosts"]
         self.create_wall_posts: bool = permissions["createWallPosts"]
         self.delete_wall_posts: bool = permissions["deleteWallPosts"]
@@ -141,6 +143,7 @@ class GroupRole:
     """
 
     def __init__(self, role) -> None:
+        self._data: dict = role
         self.id: int = int(role["id"])
         self.name: str = role["displayName"]
         self.rank: int = role["rank"]
@@ -171,6 +174,7 @@ class GroupMember(User):
     """
 
     def __init__(self, member, api_key, group=None) -> None:
+        self._data: dict = member
         self.id: int = int(member["user"].split("/")[1])
         self.role_id: int = int(member["role"].split("/")[-1])
         self.group: Group = (
@@ -241,6 +245,7 @@ class GroupJoinRequest(User):
     """
 
     def __init__(self, member, api_key, group=None) -> None:
+        self._data: dict = member
         self.id: int = int(member["user"].split("/")[1])
         self.group: Group = group
         self.requested_at: datetime.datetime = parser.parse(
@@ -297,6 +302,7 @@ class Group(Creator):
     """
 
     def __init__(self, id: int, api_key: str) -> None:
+        self._data: Optional[dict] = None
         self.id: int = id
         self.__api_key = api_key
 
@@ -330,6 +336,7 @@ class Group(Creator):
             expected_status=[200],
         )
 
+        self._data = data
         self.name = data["displayName"]
         self.description = data["description"]
         self.created_at = (

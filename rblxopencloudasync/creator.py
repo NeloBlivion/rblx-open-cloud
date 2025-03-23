@@ -382,6 +382,8 @@ class CreatorStoreProduct:
 
     def __init__(self, data: dict, api_key) -> None:
 
+        self._data: dict = data
+
         for asset_id_key, type in {
             "modelAssetId": AssetType.Model,
             "pluginAssetId": AssetType.Plugin,

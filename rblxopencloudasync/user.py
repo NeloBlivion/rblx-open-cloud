@@ -278,6 +278,7 @@ class InventoryAsset(InventoryItem):
 
     def __init__(self, data: dict) -> None:
         super().__init__(data["assetId"])
+        self._data: dict = data
         self.type: InventoryAssetType = InventoryAssetType(
             ASSET_TYPE_STRINGS.get(
                 data["inventoryItemAssetType"], InventoryAssetType.Unknown
@@ -423,6 +424,7 @@ class UserSocialLinks:
 {' ' if social_links else ''}visibility={self.visibility}>"
 
     def __init__(self, data):
+        self._data: dict = data
         self.facebook_uri: str = data.get("facebook", "")
         self.guilded_uri: str = data.get("guilded", "")
         self.twitch_uri: str = data.get("twitch", "")
@@ -446,6 +448,7 @@ class User(Creator):
     """
 
     def __init__(self, id: int, api_key: str) -> None:
+        self._data: Optional[dict] = getattr(self, "_data", None)  # certain Group classes inherit this
         self.username: Optional[str] = None
         self.id: int = id
         self.display_name: Optional[str] = None
@@ -480,6 +483,7 @@ class User(Creator):
             expected_status=[200],
         )
 
+        self._data = data
         self.username = data["name"]
         self.display_name = data["displayName"]
         self.created_at = parser.parse(data["createTime"])

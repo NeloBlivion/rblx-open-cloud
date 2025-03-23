@@ -50,6 +50,7 @@ class SortedMapEntry:
     """
 
     def __init__(self, data) -> None:
+        self._data: dict = data
         self.key: str = data["id"]
         self.sort_key: Optional[Union[int, float, str]] = data.get(
             "numericSortKey"

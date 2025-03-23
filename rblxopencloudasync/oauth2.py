@@ -72,6 +72,7 @@ class AccessTokenInfo:
     """
 
     def __init__(self, data: dict):
+        self._data: dict = data
         self.active: bool = data["active"]
         self.id: str = data["jti"]
         self.client_id: int = int(data["client_id"])
@@ -149,6 +150,7 @@ class PartialAccessToken:
         )
 
         user = User(data.get("id") or data.get("sub"), f"Bearer {self.token}")
+        user._data = data
         user.username = data.get("preferred_username")
         user.display_name = data.get("nickname")
         user.headshot_uri = data.get("picture")
@@ -255,6 +257,7 @@ class AccessToken(PartialAccessToken):
     """
 
     def __init__(self, app, payload, id_token) -> None:
+        self._data: dict = payload
         super().__init__(app, payload["access_token"])
         self.refresh_token: str = payload["refresh_token"]
         self.scope: list[str] = payload["scope"].split(" ")
@@ -267,6 +270,7 @@ class AccessToken(PartialAccessToken):
                 id_token.get("id") or id_token.get("sub"),
                 f"Bearer {self.token}",
             )
+            user._data = id_token
             self.user.username = id_token.get("preferred_username")
             self.user.display_name = id_token.get("nickname")
             self.user.headshot_uri = id_token.get("picture")

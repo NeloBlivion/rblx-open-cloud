@@ -71,6 +71,7 @@ eference/engine/classes/HttpService#GetSecret).
     """
 
     def __init__(self, data, experience) -> None:
+        self._data: Optional[dict] = data
         self.id: str = data["id"]
         self.domain: str = data.get("domain")
         self.created_at: Optional[datetime] = (
@@ -261,6 +262,7 @@ class Subscription:
     """
 
     def __init__(self, data) -> None:
+        self._data: Optional[dict] = data
         self.user_id: int = int(data["path"].split("/")[5])
         self.product_id: str = data["path"].split("/")[3]
 
@@ -389,6 +391,7 @@ class UserRestriction:
     """
 
     def __init__(self, data, api_key, place=None) -> None:
+        self._data: Optional[dict] = data
         if data.get("path"):
             if "places" not in data["path"].split("/"):
                 self.place: Optional[Place] = None
@@ -458,6 +461,7 @@ class Place:
     """
 
     def __init__(self, id, data, api_key, experience) -> None:
+        self._data: dict = data
         self.id: int = id
         self.experience: Experience = experience
         self.name: Optional[str] = data["displayName"] if data else None
@@ -477,6 +481,7 @@ class Place:
 experience={repr(self.experience)}>"
 
     def __update_params(self, data):
+        self._data = data
         self.name = data["displayName"]
         self.description = data["description"]
         self.created_at = parser.parse(data["createTime"])
@@ -709,6 +714,7 @@ class Experience:
     """
 
     def __init__(self, id: int, api_key: str):
+        self._data: Optional[dict] = None
         self.id: int = id
         self.__api_key: str = api_key
         self.__cached_secrets_public_key: Optional[public.PublicKey] = None
@@ -740,6 +746,7 @@ class Experience:
         return f"<rblxopencloud.Experience id={self.id}>"
 
     def __update_params(self, data):
+        self._data = data
         self.name = data["displayName"]
         self.description = data["description"]
 
