@@ -165,10 +165,10 @@ class Forbidden(HttpException):
     API enabled. 
     """
 
-    def __init__(self, *args: object) -> None:
-        super().__init__(
-            "Authorization lacks permission to this resource", *args
-        )
+    # def __init__(self, *args: object) -> None:
+    #     super().__init__(
+    #         "Authorization lacks permission to this resource", *args
+    #     )
 
 
 class Conflict(HttpException):
